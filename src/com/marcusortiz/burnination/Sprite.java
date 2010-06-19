@@ -5,13 +5,13 @@ import android.graphics.Bitmap;
 public class Sprite
 {
   private Bitmap bitmap;
-  private Coordinates location;
+  private Location location;
   private Speed speed;
 
   public Sprite(Bitmap bitmap)
   {
     this.bitmap = bitmap;
-    this.location = new Coordinates();
+    this.location = new Location();
     this.speed = new Speed();
   }
 
@@ -20,7 +20,7 @@ public class Sprite
     return this.bitmap;
   }
 
-  public Coordinates getLocation()
+  public Location getLocation()
   {
     return this.location;
   }
@@ -30,7 +30,7 @@ public class Sprite
     return this.speed;
   }
 
-  public class Coordinates
+  public class Location
   {
     private int x = 0;
     private int y = 0;
