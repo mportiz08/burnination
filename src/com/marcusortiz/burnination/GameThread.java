@@ -37,7 +37,7 @@ public class GameThread extends Thread
         canvas = sHolder.lockCanvas(null);
         synchronized(sHolder)
         {
-          // update panel methods
+          panel.onDraw(canvas);
         }
       }
       finally
