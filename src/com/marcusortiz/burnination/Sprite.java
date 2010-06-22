@@ -17,17 +17,23 @@ public class Sprite
 
   public Bitmap getGraphic()
   {
-    return this.bitmap;
+    return bitmap;
   }
 
   public Location getLocation()
   {
-    return this.location;
+    return location;
+  }
+  
+  public void setLocation(int x, int y)
+  {
+    location.setX(x);
+    location.setY(y);
   }
 
   public Speed getSpeed()
   {
-    return this.speed;
+    return speed;
   }
 
   public class Location

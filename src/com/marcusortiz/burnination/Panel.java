@@ -12,8 +12,11 @@ import android.view.SurfaceView;
 
 public class Panel extends SurfaceView implements SurfaceHolder.Callback
 {
+  public static final int TROGDOR_SPEED = 1;
+  
   private GameThread thread;
   private Map<Integer, Bitmap> bitmapCache;
+  private Sprite trogdor;
   
   public Panel(Context context)
   {
@@ -35,7 +38,8 @@ public class Panel extends SurfaceView implements SurfaceHolder.Callback
   protected void onDraw(Canvas canvas)
   {
     canvas.drawBitmap(bitmapCache.get(R.drawable.background), 0, 0, null);
-    canvas.drawBitmap(bitmapCache.get(R.drawable.trogdor), 0, 0, null);
+    canvas.drawBitmap(bitmapCache.get(R.drawable.trogdor), trogdor.getLocation().getX(), trogdor.getLocation().getY(), null);
+    trogdor.setLocation(trogdor.getLocation().getX() + TROGDOR_SPEED, trogdor.getLocation().getY() + TROGDOR_SPEED);
   }
 
   @Override
@@ -49,6 +53,9 @@ public class Panel extends SurfaceView implements SurfaceHolder.Callback
   {
     thread.setRunning(true);
     thread.start();
+    
+    trogdor = new Sprite(bitmapCache.get(R.drawable.trogdor));
+    trogdor.setLocation(50, 100);
   }
 
   @Override
