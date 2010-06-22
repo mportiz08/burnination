@@ -19,6 +19,11 @@ public class Sprite
   {
     return bitmap;
   }
+  
+  public void setGraphic(Bitmap graphic)
+  {
+    bitmap = graphic;
+  }
 
   public Location getLocation()
   {

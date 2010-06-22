@@ -37,6 +37,7 @@ public class GameThread extends Thread
         canvas = sHolder.lockCanvas(null);
         synchronized(sHolder)
         {
+          panel.updateTrogdor();
           panel.onDraw(canvas);
         }
       }

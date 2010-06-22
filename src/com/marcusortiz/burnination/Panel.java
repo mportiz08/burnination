@@ -31,6 +31,7 @@ public class Panel extends SurfaceView implements SurfaceHolder.Callback
   {
     bitmapCache = new HashMap<Integer, Bitmap>();
     bitmapCache.put(R.drawable.trogdor, BitmapFactory.decodeResource(getResources(), R.drawable.trogdor));
+    bitmapCache.put(R.drawable.trogdorleft, BitmapFactory.decodeResource(getResources(), R.drawable.trogdorleft));
     bitmapCache.put(R.drawable.background, BitmapFactory.decodeResource(getResources(), R.drawable.background));
   }
 
@@ -38,8 +39,66 @@ public class Panel extends SurfaceView implements SurfaceHolder.Callback
   protected void onDraw(Canvas canvas)
   {
     canvas.drawBitmap(bitmapCache.get(R.drawable.background), 0, 0, null);
-    canvas.drawBitmap(bitmapCache.get(R.drawable.trogdor), trogdor.getLocation().getX(), trogdor.getLocation().getY(), null);
-    trogdor.setLocation(trogdor.getLocation().getX() + TROGDOR_SPEED, trogdor.getLocation().getY() + TROGDOR_SPEED);
+    if(trogdor.getSpeed().getxDir() > 0)
+    {
+      canvas.drawBitmap(bitmapCache.get(R.drawable.trogdor), trogdor.getLocation().getX(), trogdor.getLocation().getY(), null);
+    }
+    else
+    {
+      canvas.drawBitmap(bitmapCache.get(R.drawable.trogdorleft), trogdor.getLocation().getX(), trogdor.getLocation().getY(), null);
+    }
+  }
+  
+  public void updateTrogdor()
+  {
+    Sprite.Location loc;
+    Sprite.Speed speed;
+    loc = trogdor.getLocation();
+    speed = trogdor.getSpeed();
+
+    // Direction
+    if(speed.getxDir() == Sprite.Speed.X_DIRECTION_RIGHT)
+    {
+      loc.setX(loc.getX() + speed.getX());
+    }
+    else
+    {
+      loc.setX(loc.getX() - speed.getX());
+    }
+    if(speed.getyDir() == Sprite.Speed.Y_DIRECTION_DOWN)
+    {
+      loc.setY(loc.getY() + speed.getY());
+    }
+    else
+    {
+      loc.setY(loc.getY() - speed.getY());
+    }
+
+    // X Borders
+    if(loc.getX() < 0)
+    {
+      speed.toggleXDir();
+      loc.setX(-loc.getX());
+    }
+    else
+      if(loc.getX() + trogdor.getGraphic().getWidth() > getWidth())
+      {
+        speed.toggleXDir();
+        loc.setX(loc.getX() + getWidth() - (loc.getX() + trogdor.getGraphic().getWidth()));
+      }
+
+    // Y Borders
+    if(loc.getY() < 0)
+    {
+      speed.toggleYDir();
+      loc.setY(-loc.getY());
+    }
+    else
+      if(loc.getY() + trogdor.getGraphic().getHeight() > getHeight())
+      {
+        speed.toggleYDir();
+        loc.setY(loc.getY() + getHeight() - (loc.getY() + trogdor.getGraphic().getHeight()));
+      }
   }
 
   @Override
