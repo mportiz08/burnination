@@ -51,13 +51,14 @@ public class Panel extends SurfaceView implements SurfaceHolder.Callback
   
   public void updateTrogdor()
   {
-    Sprite.Location loc;
-    Sprite.Speed speed;
-    loc = trogdor.getLocation();
-    speed = trogdor.getSpeed();
+    Location loc = trogdor.getLocation();
+    Speed speed = trogdor.getSpeed();
+    Bitmap graphic = trogdor.getGraphic();
+    int width = graphic.getWidth();
+    int height = graphic.getHeight();
 
     // Direction
-    if(speed.getxDir() == Sprite.Speed.X_DIRECTION_RIGHT)
+    if(speed.getxDir() == Direction.RIGHT)
     {
       loc.setX(loc.getX() + speed.getX());
     }
@@ -65,7 +66,7 @@ public class Panel extends SurfaceView implements SurfaceHolder.Callback
     {
       loc.setX(loc.getX() - speed.getX());
     }
-    if(speed.getyDir() == Sprite.Speed.Y_DIRECTION_DOWN)
+    if(speed.getyDir() == Direction.DOWN)
     {
       loc.setY(loc.getY() + speed.getY());
     }
@@ -81,10 +82,10 @@ public class Panel extends SurfaceView implements SurfaceHolder.Callback
       loc.setX(-loc.getX());
     }
     else
-      if(loc.getX() + trogdor.getGraphic().getWidth() > getWidth())
+      if(loc.getX() + width > getWidth())
       {
         speed.toggleXDir();
-        loc.setX(loc.getX() + getWidth() - (loc.getX() + trogdor.getGraphic().getWidth()));
+        loc.setX(loc.getX() + getWidth() - (loc.getX() + width));
       }
 
     // Y Borders
@@ -94,10 +95,10 @@ public class Panel extends SurfaceView implements SurfaceHolder.Callback
       loc.setY(-loc.getY());
     }
     else
-      if(loc.getY() + trogdor.getGraphic().getHeight() > getHeight())
+      if(loc.getY() + height > getHeight())
       {
         speed.toggleYDir();
-        loc.setY(loc.getY() + getHeight() - (loc.getY() + trogdor.getGraphic().getHeight()));
+        loc.setY(loc.getY() + getHeight() - (loc.getY() + height));
       }
   }
 
@@ -115,7 +116,7 @@ public class Panel extends SurfaceView implements SurfaceHolder.Callback
     thread.start();
     
     // create trogdor
-    trogdor = new Sprite(bitmapCache.get(R.drawable.trogdor), TROGDOR_SPEED, TROGDOR_SPEED);
+    trogdor = new Sprite(bitmapCache.get(R.drawable.trogdor), TROGDOR_SPEED, TROGDOR_SPEED, Direction.LEFT, Direction.UP);
     trogdor.setLocation((this.getWidth() / 2) - (trogdor.getGraphic().getWidth() / 2), (this.getHeight() / 2) - (trogdor.getGraphic().getHeight() / 2));
   }
 
