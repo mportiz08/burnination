@@ -14,6 +14,13 @@ public class Sprite
     this.location = new Location();
     this.speed = new Speed();
   }
+  
+  public Sprite(Bitmap bitmap, int dx, int dy)
+  {
+    this.bitmap = bitmap;
+    this.location = new Location();
+    this.speed = new Speed(dx, dy);
+  }
 
   public Bitmap getGraphic()
   {
@@ -74,10 +81,26 @@ public class Sprite
     public static final int Y_DIRECTION_DOWN = 1;
     public static final int Y_DIRECTION_UP = -1;
 
-    private int x = 1;
-    private int y = 1;
-    private int xDir = X_DIRECTION_RIGHT;
-    private int yDir = Y_DIRECTION_DOWN;
+    private int x;
+    private int y;
+    private int xDir;
+    private int yDir;
+    
+    public Speed()
+    {
+      x = 1;
+      y = 1;
+      xDir = X_DIRECTION_RIGHT;
+      yDir = Y_DIRECTION_DOWN;
+    }
+    
+    public Speed(int dx, int dy)
+    {
+      x = dx;
+      y = dy;
+      xDir = X_DIRECTION_RIGHT;
+      yDir = Y_DIRECTION_DOWN;
+    }
 
     public int getxDir()
     {

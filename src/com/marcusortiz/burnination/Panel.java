@@ -12,7 +12,7 @@ import android.view.SurfaceView;
 
 public class Panel extends SurfaceView implements SurfaceHolder.Callback
 {
-  public static final int TROGDOR_SPEED = 1;
+  public static final int TROGDOR_SPEED = 2;
   
   private GameThread thread;
   private Map<Integer, Bitmap> bitmapCache;
@@ -110,11 +110,13 @@ public class Panel extends SurfaceView implements SurfaceHolder.Callback
   @Override
   public void surfaceCreated(SurfaceHolder holder)
   {
+    // start thread
     thread.setRunning(true);
     thread.start();
     
-    trogdor = new Sprite(bitmapCache.get(R.drawable.trogdor));
-    trogdor.setLocation(50, 100);
+    // create trogdor
+    trogdor = new Sprite(bitmapCache.get(R.drawable.trogdor), TROGDOR_SPEED, TROGDOR_SPEED);
+    trogdor.setLocation((this.getWidth() / 2) - (trogdor.getGraphic().getWidth() / 2), (this.getHeight() / 2) - (trogdor.getGraphic().getHeight() / 2));
   }
 
   @Override
