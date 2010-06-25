@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -22,7 +23,7 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback
   private Map<Integer, Bitmap> bitmapCache;
   private ArrayList<Sprite> sprites;
   private Trogdor trogdor;
-  private ArrayList<Float> line = null;
+  private Path line = null;
   private boolean completeLine = false;
   
   public MainView(Context context)
@@ -67,14 +68,9 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback
       linePaint.setStrokeWidth(2);
       linePaint.setAntiAlias(true);
       
-      float[] points = new float[line.size()];
-      for(int i = 0; i < line.size(); i++)
-      {
-        points[i] = line.get(i).floatValue();
-      }
+      canvas.drawPath(line, linePaint);
       
-      canvas.drawPoints(points, linePaint);
-      line.clear();
+      line = null;
       completeLine = false;
     }
   }
@@ -84,15 +80,16 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback
   {
     synchronized(thread.getSurfaceHolder())
     {
-      if(event.getAction() == MotionEvent.ACTION_DOWN || event.getAction() == MotionEvent.ACTION_MOVE)
+      if(event.getAction() == MotionEvent.ACTION_DOWN)
       {
-        line.add(new Float(event.getX()));
-        line.add(new Float(event.getY()));
+        line = new Path();
+        line.moveTo(event.getX(), event.getY());
       }
       if(event.getAction() == MotionEvent.ACTION_UP)
       {
-        line.add(new Float(event.getX()));
-        line.add(new Float(event.getY()));
+        line.lineTo(event.getX(), event.getY());
+        line.setLastPoint(event.getX(), event.getY());
+        line.close();
         completeLine = true;
       }
     }
@@ -114,7 +111,6 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback
     thread.start();
     
     sprites = new ArrayList<Sprite>();
-    line = new ArrayList<Float>();
     
     // create trogdor
     trogdor = new Trogdor(bitmapCache.get(R.drawable.trogdor), 0, 0, Direction.RIGHT, 0, this);
