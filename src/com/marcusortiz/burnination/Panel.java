@@ -116,7 +116,7 @@ public class Panel extends SurfaceView implements SurfaceHolder.Callback
     thread.start();
     
     // create trogdor
-    trogdor = new Sprite(bitmapCache.get(R.drawable.trogdor), TROGDOR_SPEED, TROGDOR_SPEED, Direction.LEFT, Direction.UP);
+    trogdor = new Sprite(bitmapCache.get(R.drawable.trogdor), TROGDOR_SPEED, TROGDOR_SPEED, Direction.randomX(), Direction.randomY());
     trogdor.setLocation((this.getWidth() / 2) - (trogdor.getGraphic().getWidth() / 2), (this.getHeight() / 2) - (trogdor.getGraphic().getHeight() / 2));
   }
 
@@ -132,7 +132,7 @@ public class Panel extends SurfaceView implements SurfaceHolder.Callback
         thread.join();
         retry = false;
       }
-      catch(InterruptedException e) {} // TODO: log exception
+      catch(InterruptedException e){}
     }
   }
 }
