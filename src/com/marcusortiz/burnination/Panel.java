@@ -13,6 +13,7 @@ import android.view.SurfaceView;
 public class Panel extends SurfaceView implements SurfaceHolder.Callback
 {
   public static final int TROGDOR_SPEED = 2;
+  public static final String DEBUG = "DEBUG";
   
   private GameThread thread;
   private Map<Integer, Bitmap> bitmapCache;
