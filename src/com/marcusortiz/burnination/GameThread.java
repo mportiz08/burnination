@@ -6,10 +6,10 @@ import android.view.SurfaceHolder;
 public class GameThread extends Thread
 {
   private SurfaceHolder sHolder;
-  private Panel panel;
+  private MainView panel;
   private boolean isRunning;
   
-  public GameThread(SurfaceHolder sHolder, Panel panel)
+  public GameThread(SurfaceHolder sHolder, MainView panel)
   {
     this.sHolder = sHolder;
     this.panel = panel;

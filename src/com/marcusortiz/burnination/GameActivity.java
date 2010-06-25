@@ -12,7 +12,7 @@ public class GameActivity extends Activity
   {
     super.onCreate(savedInstanceState);
     requestWindowFeature(Window.FEATURE_NO_TITLE);
-    setContentView(new Panel(this));
+    setContentView(new MainView(this));
   }
 
   @Override
