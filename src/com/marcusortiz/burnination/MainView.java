@@ -24,8 +24,8 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback
   private Map<Integer, Bitmap> bitmapCache;
   private ArrayList<Sprite> sprites;
   private Trogdor trogdor;
-  private Path line = null;
-  private boolean completeLine = false;
+  private Path line;
+  private ArrayList<Path> lines;
   
   public MainView(Context context)
   {
@@ -62,7 +62,7 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback
       canvas.drawBitmap(bitmapCache.get(R.drawable.trogdorleft), trogdor.getLocation().getX(), trogdor.getLocation().getY(), null);
     }
     
-    if(completeLine)
+    if(!lines.isEmpty())
     {
       Paint linePaint = new Paint();
       linePaint.setStyle(Paint.Style.STROKE);
@@ -71,7 +71,7 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback
       linePaint.setShadowLayer(1, 1, 1, Color.BLACK);
       linePaint.setAntiAlias(true);
       
-      canvas.drawPath(line, linePaint);
+      canvas.drawPath(lines.get(lines.size() - 1), linePaint);
     }
   }
 
@@ -93,8 +93,7 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback
       {
         line.lineTo(event.getX(), event.getY());
         line.setLastPoint(event.getX(), event.getY());
-        //line.close();
-        completeLine = true;
+        lines.add(line);
       }
     }
     
@@ -115,6 +114,7 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback
     thread.start();
     
     sprites = new ArrayList<Sprite>();
+    lines = new ArrayList<Path>();
     
     // create trogdor
     trogdor = new Trogdor(bitmapCache.get(R.drawable.trogdor), 0, 0, Direction.RIGHT, 0, this);
