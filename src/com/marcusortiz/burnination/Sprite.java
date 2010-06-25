@@ -2,7 +2,7 @@ package com.marcusortiz.burnination;
 
 import android.graphics.Bitmap;
 
-public class Sprite
+public abstract class Sprite
 { 
   private Bitmap bitmap;
   private Location location;
@@ -47,4 +47,6 @@ public class Sprite
   {
     return speed;
   }
+  
+  public abstract void update();
 }

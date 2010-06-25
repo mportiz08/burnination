@@ -1,5 +1,6 @@
 package com.marcusortiz.burnination;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,7 +18,8 @@ public class Panel extends SurfaceView implements SurfaceHolder.Callback
   
   private GameThread thread;
   private Map<Integer, Bitmap> bitmapCache;
-  private Sprite trogdor;
+  private ArrayList<Sprite> sprites;
+  private Trogdor trogdor;
   
   public Panel(Context context)
   {
@@ -26,6 +28,11 @@ public class Panel extends SurfaceView implements SurfaceHolder.Callback
     getHolder().addCallback(this);
     this.thread = new GameThread(getHolder(), this);
     setFocusable(true);
+  }
+  
+  public ArrayList<Sprite> getSprites()
+  {
+    return sprites;
   }
   
   private void fillCache()
@@ -49,59 +56,6 @@ public class Panel extends SurfaceView implements SurfaceHolder.Callback
       canvas.drawBitmap(bitmapCache.get(R.drawable.trogdorleft), trogdor.getLocation().getX(), trogdor.getLocation().getY(), null);
     }
   }
-  
-  public void updateTrogdor()
-  {
-    Location loc = trogdor.getLocation();
-    Speed speed = trogdor.getSpeed();
-    Bitmap graphic = trogdor.getGraphic();
-    int width = graphic.getWidth();
-    int height = graphic.getHeight();
-
-    // Direction
-    if(speed.getxDir() == Direction.RIGHT)
-    {
-      loc.setX(loc.getX() + speed.getX());
-    }
-    else
-    {
-      loc.setX(loc.getX() - speed.getX());
-    }
-    if(speed.getyDir() == Direction.DOWN)
-    {
-      loc.setY(loc.getY() + speed.getY());
-    }
-    else
-    {
-      loc.setY(loc.getY() - speed.getY());
-    }
-
-    // X Borders
-    if(loc.getX() < 0)
-    {
-      speed.toggleXDir();
-      loc.setX(-loc.getX());
-    }
-    else
-      if(loc.getX() + width > getWidth())
-      {
-        speed.toggleXDir();
-        loc.setX(loc.getX() + getWidth() - (loc.getX() + width));
-      }
-
-    // Y Borders
-    if(loc.getY() < 0)
-    {
-      speed.toggleYDir();
-      loc.setY(-loc.getY());
-    }
-    else
-      if(loc.getY() + height > getHeight())
-      {
-        speed.toggleYDir();
-        loc.setY(loc.getY() + getHeight() - (loc.getY() + height));
-      }
-  }
 
   @Override
   public void surfaceChanged(SurfaceHolder holder, int format, int width, int height)
@@ -115,10 +69,12 @@ public class Panel extends SurfaceView implements SurfaceHolder.Callback
     // start thread
     thread.setRunning(true);
     thread.start();
+    sprites = new ArrayList<Sprite>();
     
     // create trogdor
-    trogdor = new Sprite(bitmapCache.get(R.drawable.trogdor), TROGDOR_SPEED, TROGDOR_SPEED, Direction.randomX(), Direction.randomY());
+    trogdor = new Trogdor(bitmapCache.get(R.drawable.trogdor), TROGDOR_SPEED, TROGDOR_SPEED, Direction.randomX(), Direction.randomY(), this);
     trogdor.setLocation((this.getWidth() / 2) - (trogdor.getGraphic().getWidth() / 2), (this.getHeight() / 2) - (trogdor.getGraphic().getHeight() / 2));
+    sprites.add(trogdor);
   }
 
   @Override
