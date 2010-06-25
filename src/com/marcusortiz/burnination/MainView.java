@@ -8,6 +8,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.view.MotionEvent;
@@ -66,12 +67,11 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback
       Paint linePaint = new Paint();
       linePaint.setStyle(Paint.Style.STROKE);
       linePaint.setStrokeWidth(2);
+      linePaint.setColor(Color.WHITE);
+      linePaint.setShadowLayer(1, 1, 1, Color.BLACK);
       linePaint.setAntiAlias(true);
       
       canvas.drawPath(line, linePaint);
-      
-      line = null;
-      completeLine = false;
     }
   }
 
@@ -85,11 +85,15 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback
         line = new Path();
         line.moveTo(event.getX(), event.getY());
       }
+      if(event.getAction() == MotionEvent.ACTION_MOVE)
+      {
+        line.lineTo(event.getX(), event.getY());
+      }
       if(event.getAction() == MotionEvent.ACTION_UP)
       {
         line.lineTo(event.getX(), event.getY());
         line.setLastPoint(event.getX(), event.getY());
-        line.close();
+        //line.close();
         completeLine = true;
       }
     }
