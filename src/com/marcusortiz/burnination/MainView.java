@@ -21,11 +21,16 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback
   public static final String DEBUG = "DEBUG";
   
   private GameThread thread;
-  private Map<Integer, Bitmap> bitmapCache;
+  private Map<ID, Bitmap> bitmapCache;
   private ArrayList<Sprite> sprites;
   private Trogdor trogdor;
   private Path line;
   private ArrayList<Path> lines;
+  
+  public enum ID
+  {
+    TROGDOR_R, TROGDOR_L, PEASANT, BACKGROUND;
+  }
   
   public MainView(Context context)
   {
@@ -43,23 +48,24 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback
   
   private void fillCache()
   {
-    bitmapCache = new HashMap<Integer, Bitmap>();
-    bitmapCache.put(R.drawable.trogdor, BitmapFactory.decodeResource(getResources(), R.drawable.trogdor));
-    bitmapCache.put(R.drawable.trogdorleft, BitmapFactory.decodeResource(getResources(), R.drawable.trogdorleft));
-    bitmapCache.put(R.drawable.background, BitmapFactory.decodeResource(getResources(), R.drawable.background));
+    bitmapCache = new HashMap<ID, Bitmap>();
+    bitmapCache.put(ID.TROGDOR_R, BitmapFactory.decodeResource(getResources(), R.drawable.trogdor));
+    bitmapCache.put(ID.TROGDOR_L, BitmapFactory.decodeResource(getResources(), R.drawable.trogdorleft));
+    bitmapCache.put(ID.PEASANT, BitmapFactory.decodeResource(getResources(), R.drawable.peasant));
+    bitmapCache.put(ID.BACKGROUND, BitmapFactory.decodeResource(getResources(), R.drawable.background));
   }
 
   @Override
   protected void onDraw(Canvas canvas)
   {
-    canvas.drawBitmap(bitmapCache.get(R.drawable.background), 0, 0, null);
+    canvas.drawBitmap(bitmapCache.get(ID.BACKGROUND), 0, 0, null);
     if(trogdor.getSpeed().getxDir() > 0)
     {
-      canvas.drawBitmap(bitmapCache.get(R.drawable.trogdor), trogdor.getLocation().getX(), trogdor.getLocation().getY(), null);
+      canvas.drawBitmap(bitmapCache.get(ID.TROGDOR_R), trogdor.getLocation().getX(), trogdor.getLocation().getY(), null);
     }
     else
     {
-      canvas.drawBitmap(bitmapCache.get(R.drawable.trogdorleft), trogdor.getLocation().getX(), trogdor.getLocation().getY(), null);
+      canvas.drawBitmap(bitmapCache.get(ID.TROGDOR_L), trogdor.getLocation().getX(), trogdor.getLocation().getY(), null);
     }
     
     if(!lines.isEmpty())
@@ -117,7 +123,8 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback
     lines = new ArrayList<Path>();
     
     // create trogdor
-    trogdor = new Trogdor(bitmapCache.get(R.drawable.trogdor), 0, 0, Direction.RIGHT, 0, this);
+    Speed trogdorSpeed = new Speed(TROGDOR_SPEED, TROGDOR_SPEED, Direction.RIGHT, Direction.DOWN);
+    trogdor = new Trogdor(bitmapCache.get(ID.TROGDOR_R), trogdorSpeed, this);
     trogdor.setLocation((this.getWidth() / 2) - (trogdor.getGraphic().getWidth() / 2), (this.getHeight() / 2) - (trogdor.getGraphic().getHeight() / 2));
     sprites.add(trogdor);
   }

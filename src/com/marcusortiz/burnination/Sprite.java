@@ -1,6 +1,7 @@
 package com.marcusortiz.burnination;
 
 import android.graphics.Bitmap;
+import android.view.View;
 
 public abstract class Sprite
 { 
@@ -15,11 +16,11 @@ public abstract class Sprite
     this.speed = new Speed();
   }
   
-  public Sprite(Bitmap bitmap, int dx, int dy, int xDir, int yDir)
+  public Sprite(Bitmap bitmap, Speed speed)
   {
     this.bitmap = bitmap;
     this.location = new Location();
-    this.speed = new Speed(dx, dy, xDir, yDir);
+    this.speed = new Speed(speed.getX(), speed.getY(), speed.getxDir(), speed.getyDir());
   }
 
   public Bitmap getGraphic()
@@ -46,6 +47,59 @@ public abstract class Sprite
   public Speed getSpeed()
   {
     return speed;
+  }
+  
+  public void checkBorders(View view)
+  {
+    Location loc = getLocation();
+    Speed speed = getSpeed();
+    Bitmap graphic = getGraphic();
+    int width = graphic.getWidth();
+    int height = graphic.getHeight();
+
+    // Direction
+    if(speed.getxDir() == Direction.RIGHT)
+    {
+      loc.setX(loc.getX() + speed.getX());
+    }
+    else
+    {
+      loc.setX(loc.getX() - speed.getX());
+    }
+    if(speed.getyDir() == Direction.DOWN)
+    {
+      loc.setY(loc.getY() + speed.getY());
+    }
+    else
+    {
+      loc.setY(loc.getY() - speed.getY());
+    }
+
+    // X Borders
+    if(loc.getX() < 0)
+    {
+      speed.toggleXDir();
+      loc.setX(-loc.getX());
+    }
+    else
+      if(loc.getX() + width > view.getWidth())
+      {
+        speed.toggleXDir();
+        loc.setX(loc.getX() + view.getWidth() - (loc.getX() + width));
+      }
+
+    // Y Borders
+    if(loc.getY() < 0)
+    {
+      speed.toggleYDir();
+      loc.setY(-loc.getY());
+    }
+    else
+      if(loc.getY() + height > view.getHeight())
+      {
+        speed.toggleYDir();
+        loc.setY(loc.getY() + view.getHeight() - (loc.getY() + height));
+      }
   }
   
   public abstract void update();
