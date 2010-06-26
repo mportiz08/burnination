@@ -1,13 +1,13 @@
 package com.marcusortiz.burnination;
 
-public class Speed
+public class Velocity
 {
   private int dx;
   private int dy;
   private int xDir;
   private int yDir;
   
-  public Speed()
+  public Velocity()
   {
     dx = 1;
     dy = 1;
@@ -15,7 +15,7 @@ public class Speed
     yDir = Direction.DOWN;
   }
   
-  public Speed(int dx, int dy, int xDir, int yDir)
+  public Velocity(int dx, int dy, int xDir, int yDir)
   {
     this.dx = dx;
     this.dy = dy;

@@ -12,7 +12,7 @@ public class Trogdor extends Sprite
     super(bitmap);
   }
 
-  public Trogdor(Bitmap bitmap, Speed speed, View view)
+  public Trogdor(Bitmap bitmap, Velocity speed, View view)
   {
     super(bitmap, speed);
     this.view = view;

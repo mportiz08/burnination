@@ -12,7 +12,7 @@ public class Peasant extends Sprite
     super(bitmap);
   }
 
-  public Peasant(Bitmap bitmap, Speed speed, View view)
+  public Peasant(Bitmap bitmap, Velocity speed, View view)
   {
     super(bitmap, speed);
     this.view = view;

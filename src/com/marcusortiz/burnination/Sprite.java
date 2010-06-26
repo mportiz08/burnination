@@ -1,26 +1,27 @@
 package com.marcusortiz.burnination;
 
 import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.view.View;
 
 public abstract class Sprite
 { 
   private Bitmap bitmap;
-  private Location location;
-  private Speed speed;
+  private Point location;
+  private Velocity speed;
 
   public Sprite(Bitmap bitmap)
   {
     this.bitmap = bitmap;
-    this.location = new Location();
-    this.speed = new Speed();
+    this.location = new Point();
+    this.speed = new Velocity();
   }
   
-  public Sprite(Bitmap bitmap, Speed speed)
+  public Sprite(Bitmap bitmap, Velocity speed)
   {
     this.bitmap = bitmap;
-    this.location = new Location();
-    this.speed = new Speed(speed.getX(), speed.getY(), speed.getxDir(), speed.getyDir());
+    this.location = new Point();
+    this.speed = new Velocity(speed.getX(), speed.getY(), speed.getxDir(), speed.getyDir());
   }
 
   public Bitmap getGraphic()
@@ -33,26 +34,25 @@ public abstract class Sprite
     bitmap = graphic;
   }
 
-  public Location getLocation()
+  public Point getLocation()
   {
     return location;
   }
   
   public void setLocation(int x, int y)
   {
-    location.setX(x);
-    location.setY(y);
+    location.set(x, y);
   }
 
-  public Speed getSpeed()
+  public Velocity getSpeed()
   {
     return speed;
   }
   
   public void checkBorders(View view)
   {
-    Location loc = getLocation();
-    Speed speed = getSpeed();
+    Point loc = getLocation();
+    Velocity speed = getSpeed();
     Bitmap graphic = getGraphic();
     int width = graphic.getWidth();
     int height = graphic.getHeight();
@@ -60,45 +60,45 @@ public abstract class Sprite
     // Direction
     if(speed.getxDir() == Direction.RIGHT)
     {
-      loc.setX(loc.getX() + speed.getX());
+      loc.x = loc.x + speed.getX();
     }
     else
     {
-      loc.setX(loc.getX() - speed.getX());
+      loc.x = loc.x - speed.getX();
     }
     if(speed.getyDir() == Direction.DOWN)
     {
-      loc.setY(loc.getY() + speed.getY());
+      loc.y = loc.y + speed.getY();
     }
     else
     {
-      loc.setY(loc.getY() - speed.getY());
+      loc.y = loc.y - speed.getY();
     }
 
     // X Borders
-    if(loc.getX() < 0)
+    if(loc.x < 0)
     {
       speed.toggleXDir();
-      loc.setX(-loc.getX());
+      loc.x = 0 - loc.x;
     }
     else
-      if(loc.getX() + width > view.getWidth())
+      if(loc.x + width > view.getWidth())
       {
         speed.toggleXDir();
-        loc.setX(loc.getX() + view.getWidth() - (loc.getX() + width));
+        loc.x = loc.x + view.getWidth() - (loc.x + width);
       }
 
     // Y Borders
-    if(loc.getY() < 0)
+    if(loc.y < 0)
     {
       speed.toggleYDir();
-      loc.setY(-loc.getY());
+      loc.y = 0 - loc.y;
     }
     else
-      if(loc.getY() + height > view.getHeight())
+      if(loc.y + height > view.getHeight())
       {
         speed.toggleYDir();
-        loc.setY(loc.getY() + view.getHeight() - (loc.getY() + height));
+        loc.y = loc.y + view.getHeight() - (loc.y + height);
       }
   }
   
