@@ -72,6 +72,12 @@ public class Velocity
   {
     this.dy = dy;
   }
+  
+  public void stop()
+  {
+    dx = 0;
+    dy = 0;
+  }
 
   @Override
   public String toString()

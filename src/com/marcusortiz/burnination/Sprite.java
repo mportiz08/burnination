@@ -10,20 +10,20 @@ public abstract class Sprite
 { 
   private Bitmap bitmap;
   private Point location;
-  private Velocity speed;
+  private Velocity velocity;
 
   public Sprite(Bitmap bitmap)
   {
     this.bitmap = bitmap;
     this.location = new Point();
-    this.speed = new Velocity();
+    this.velocity = new Velocity();
   }
   
   public Sprite(Bitmap bitmap, Velocity speed)
   {
     this.bitmap = bitmap;
     this.location = new Point();
-    this.speed = new Velocity(speed.getX(), speed.getY(), speed.getxDir(), speed.getyDir());
+    this.velocity = new Velocity(speed.getX(), speed.getY(), speed.getxDir(), speed.getyDir());
   }
 
   public Bitmap getGraphic()
@@ -46,9 +46,14 @@ public abstract class Sprite
     location.set(x, y);
   }
 
-  public Velocity getSpeed()
+  public Velocity getVelocity()
   {
-    return speed;
+    return velocity;
+  }
+  
+  public void setVelocity(int dx, int dy, int xDir, int yDir)
+  {
+    this.velocity = new Velocity(dx, dy, xDir, yDir);
   }
   
   public Point getRandomPoint(View view)
@@ -68,7 +73,7 @@ public abstract class Sprite
   public void checkBorders(View view)
   {
     Point loc = getLocation();
-    Velocity speed = getSpeed();
+    Velocity speed = getVelocity();
     Bitmap graphic = getGraphic();
     int width = graphic.getWidth();
     int height = graphic.getHeight();

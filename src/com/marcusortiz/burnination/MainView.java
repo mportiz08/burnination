@@ -27,7 +27,6 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback
   private ArrayList<Sprite> sprites;
   private ArrayList<Peasant> peasants;
   private Trogdor trogdor;
-  private Path line;
   private ArrayList<Path> lines;
   
   public enum ID
@@ -84,7 +83,7 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback
     }
     
     // draw trogdor
-    if(trogdor.getSpeed().getxDir() > 0)
+    if(trogdor.getVelocity().getxDir() > 0)
     {
       canvas.drawBitmap(bitmapCache.get(ID.TROGDOR_R), trogdor.getLocation().x, trogdor.getLocation().y, null);
     }
@@ -99,20 +98,9 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback
   {
     synchronized(thread.getSurfaceHolder())
     {
-      if(event.getAction() == MotionEvent.ACTION_DOWN)
+      for(Peasant p : peasants)
       {
-        line = new Path();
-        line.moveTo(event.getX(), event.getY());
-      }
-      if(event.getAction() == MotionEvent.ACTION_MOVE)
-      {
-        line.lineTo(event.getX(), event.getY());
-      }
-      if(event.getAction() == MotionEvent.ACTION_UP)
-      {
-        line.lineTo(event.getX(), event.getY());
-        line.setLastPoint(event.getX(), event.getY());
-        lines.add(line);
+          p.drawLine(event, lines);
       }
     }
     
