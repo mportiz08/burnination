@@ -1,5 +1,7 @@
 package com.marcusortiz.burnination;
 
+import java.util.Random;
+
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.view.View;
@@ -47,6 +49,20 @@ public abstract class Sprite
   public Velocity getSpeed()
   {
     return speed;
+  }
+  
+  public Point getRandomPoint(View view)
+  {
+    Point point = new Point();
+    Random gen = new Random();
+    Bitmap graphic = getGraphic();
+    
+    int x = gen.nextInt(view.getWidth() - graphic.getWidth());
+    int y = gen.nextInt(view.getHeight() - graphic.getHeight());
+    
+    point.set(x, y);
+    
+    return point;
   }
   
   public void checkBorders(View view)

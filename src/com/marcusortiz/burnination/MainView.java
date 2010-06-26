@@ -17,12 +17,15 @@ import android.view.SurfaceView;
 
 public class MainView extends SurfaceView implements SurfaceHolder.Callback
 {
-  public static final int TROGDOR_SPEED = 2;
+  public static final int SPEED_TROGDOR = 2;
+  public static final int SPEED_PEASANT = 1;
+  public static final int NUM_PEASANTS = 3;
   public static final String DEBUG = "DEBUG";
   
   private GameThread thread;
   private Map<ID, Bitmap> bitmapCache;
   private ArrayList<Sprite> sprites;
+  private ArrayList<Peasant> peasants;
   private Trogdor trogdor;
   private Path line;
   private ArrayList<Path> lines;
@@ -58,16 +61,10 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback
   @Override
   protected void onDraw(Canvas canvas)
   {
+    // draw background
     canvas.drawBitmap(bitmapCache.get(ID.BACKGROUND), 0, 0, null);
-    if(trogdor.getSpeed().getxDir() > 0)
-    {
-      canvas.drawBitmap(bitmapCache.get(ID.TROGDOR_R), trogdor.getLocation().x, trogdor.getLocation().y, null);
-    }
-    else
-    {
-      canvas.drawBitmap(bitmapCache.get(ID.TROGDOR_L), trogdor.getLocation().x, trogdor.getLocation().y, null);
-    }
     
+    // draw lines
     if(!lines.isEmpty())
     {
       Paint linePaint = new Paint();
@@ -78,6 +75,22 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback
       linePaint.setAntiAlias(true);
       
       canvas.drawPath(lines.get(lines.size() - 1), linePaint);
+    }
+    
+    // draw peasants
+    for(Peasant p : peasants)
+    {
+      canvas.drawBitmap(bitmapCache.get(ID.PEASANT), p.getLocation().x, p.getLocation().y, null);
+    }
+    
+    // draw trogdor
+    if(trogdor.getSpeed().getxDir() > 0)
+    {
+      canvas.drawBitmap(bitmapCache.get(ID.TROGDOR_R), trogdor.getLocation().x, trogdor.getLocation().y, null);
+    }
+    else
+    {
+      canvas.drawBitmap(bitmapCache.get(ID.TROGDOR_L), trogdor.getLocation().x, trogdor.getLocation().y, null);
     }
   }
 
@@ -123,10 +136,21 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback
     lines = new ArrayList<Path>();
     
     // create trogdor
-    Velocity trogdorSpeed = new Velocity(TROGDOR_SPEED, TROGDOR_SPEED, Direction.RIGHT, Direction.DOWN);
-    trogdor = new Trogdor(bitmapCache.get(ID.TROGDOR_R), trogdorSpeed, this);
+    Velocity trogdorVel = new Velocity(SPEED_TROGDOR, SPEED_TROGDOR, Direction.RIGHT, Direction.DOWN);
+    trogdor = new Trogdor(bitmapCache.get(ID.TROGDOR_R), trogdorVel, this);
     trogdor.setLocation((this.getWidth() / 2) - (trogdor.getGraphic().getWidth() / 2), (this.getHeight() / 2) - (trogdor.getGraphic().getHeight() / 2));
     sprites.add(trogdor);
+    
+    // create peasants
+    peasants = new ArrayList<Peasant>();
+    for(int i = 0; i < NUM_PEASANTS; i++)
+    {
+      Velocity pVel = new Velocity(SPEED_PEASANT, SPEED_PEASANT, Direction.randomX(), Direction.randomY());
+      Peasant p = new Peasant(bitmapCache.get(ID.PEASANT), pVel, this);
+      p.setLocation(p.getRandomPoint(this).x, p.getRandomPoint(this).y);
+      peasants.add(p);
+    }
+    sprites.addAll(peasants);
   }
 
   @Override

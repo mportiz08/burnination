@@ -22,6 +22,11 @@ public class Peasant extends Sprite
   public void update()
   {
     super.checkBorders(view);
+    checkCollisions();
   }
 
+  public void checkCollisions()
+  {
+    // TODO: check for collisions with trogdor
+  }
 }
