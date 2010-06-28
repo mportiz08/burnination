@@ -11,6 +11,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.media.MediaPlayer;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -22,6 +23,7 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback
   public static final int NUM_PEASANTS = 3;
   public static final String DEBUG = "DEBUG";
   
+  private MediaPlayer song;
   private GameThread thread;
   private Map<ID, Bitmap> bitmapCache;
   private ArrayList<Sprite> sprites;
@@ -38,6 +40,7 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback
   {
     super(context);
     fillCache();
+    song = MediaPlayer.create(getContext(), R.raw.trogdor);
     getHolder().addCallback(this);
     this.thread = new GameThread(getHolder(), this);
     setFocusable(true);
@@ -136,6 +139,10 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback
     }
     sprites.addAll(peasants);
     
+    // play song
+    song.seekTo(0);
+    song.start();
+    
     // start thread
     thread.setRunning(true);
     thread.start();
@@ -144,6 +151,7 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback
   @Override
   public void surfaceDestroyed(SurfaceHolder holder)
   {
+    song.stop();
     boolean retry = true;
     thread.setRunning(false);
     while(retry)
