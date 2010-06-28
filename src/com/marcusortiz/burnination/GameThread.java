@@ -1,5 +1,7 @@
 package com.marcusortiz.burnination;
 
+import java.util.List;
+
 import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 
@@ -37,11 +39,18 @@ public class GameThread extends Thread
         canvas = sHolder.lockCanvas(null);
         synchronized(sHolder)
         {
-          for(Sprite s : panel.getSprites())
+          List<Sprite> sprites = panel.getSprites();
+          if(sprites != null)
           {
-            s.update();
+            for(Sprite s : sprites)
+            {
+              s.update();
+            }
           }
-          panel.onDraw(canvas);
+          if(panel != null)
+          {
+            panel.onDraw(canvas);
+          }
         }
       }
       finally

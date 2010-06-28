@@ -64,7 +64,7 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback
     canvas.drawBitmap(bitmapCache.get(ID.BACKGROUND), 0, 0, null);
     
     // draw lines
-    if(!lines.isEmpty())
+    if(lines != null && !lines.isEmpty())
     {
       Paint linePaint = new Paint();
       linePaint.setStyle(Paint.Style.STROKE);
