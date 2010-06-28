@@ -116,10 +116,6 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback
   @Override
   public void surfaceCreated(SurfaceHolder holder)
   {
-    // start thread
-    thread.setRunning(true);
-    thread.start();
-    
     sprites = new ArrayList<Sprite>();
     lines = new ArrayList<Path>();
     
@@ -139,6 +135,10 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback
       peasants.add(p);
     }
     sprites.addAll(peasants);
+    
+    // start thread
+    thread.setRunning(true);
+    thread.start();
   }
 
   @Override
