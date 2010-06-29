@@ -42,8 +42,12 @@ public class Peasant extends Sprite
     {
       Bitmap bmp = getGraphic();
       Point loc = getLocation();
-      if( (event.getX() >= loc.x && event.getX() <= (loc.x + bmp.getWidth())) &&
-          (event.getY() >= loc.y && event.getY() <= (loc.y + bmp.getHeight())))
+      int width = bmp.getWidth();
+      int height = bmp.getHeight();
+      int x = (int)event.getX();
+      int y = (int)event.getY();
+      if( (x >= (loc.x - width) && x <= (loc.x + width*2)) &&
+          (y >= (loc.y - height) && y <= (loc.y + height*2)))
       {
         setVelocity(0, 0, getVelocity().getxDir(), getVelocity().getyDir());
         line = new Path();

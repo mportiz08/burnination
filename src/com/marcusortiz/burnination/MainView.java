@@ -21,6 +21,7 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback
   public static final int SPEED_TROGDOR = 2;
   public static final int SPEED_PEASANT = 1;
   public static final int NUM_PEASANTS = 3;
+  public static final int TRANSPARENCY = 50;
   public static final String DEBUG = "DEBUG";
   
   private MediaPlayer song;
@@ -73,7 +74,8 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback
       linePaint.setStyle(Paint.Style.STROKE);
       linePaint.setStrokeWidth(2);
       linePaint.setColor(Color.WHITE);
-      linePaint.setShadowLayer(1, 1, 1, Color.BLACK);
+      linePaint.setAlpha(TRANSPARENCY);
+      //linePaint.setShadowLayer(1, 1, 1, Color.BLACK);
       linePaint.setAntiAlias(true);
       
       canvas.drawPath(lines.get(lines.size() - 1), linePaint);
