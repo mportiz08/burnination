@@ -12,6 +12,7 @@ public class Peasant extends Sprite
 {
   private View view;
   private Path line = null;
+  private Velocity savedVel;
   
   public Peasant(Bitmap bitmap)
   {
@@ -49,6 +50,7 @@ public class Peasant extends Sprite
       if( (x >= (loc.x - width) && x <= (loc.x + width*2)) &&
           (y >= (loc.y - height) && y <= (loc.y + height*2)))
       {
+        savedVel = getVelocity();
         setVelocity(0, 0, getVelocity().getxDir(), getVelocity().getyDir());
         line = new Path();
         line.moveTo(event.getX(), event.getY());
@@ -66,6 +68,7 @@ public class Peasant extends Sprite
       line.setLastPoint(event.getX(), event.getY());
       lines.add(line);
       line = null;
+      setVelocity(savedVel);
     }
   }
 }

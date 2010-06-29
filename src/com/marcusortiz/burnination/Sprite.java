@@ -56,6 +56,11 @@ public abstract class Sprite
     this.velocity = new Velocity(dx, dy, xDir, yDir);
   }
   
+  public void setVelocity(Velocity other)
+  {
+    setVelocity(other.getX(), other.getY(), other.getxDir(), other.getyDir());
+  }
+  
   public Point getRandomPoint(View view)
   {
     Point point = new Point();
