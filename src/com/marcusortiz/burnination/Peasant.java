@@ -10,9 +10,12 @@ import android.view.View;
 
 public class Peasant extends Sprite
 {
+  public static final int SEGMENT_SPACING = 50;
+  
   private View view;
   private Path line = null;
   private Velocity savedVel;
+  private Point lastPoint = null;
   
   public Peasant(Bitmap bitmap)
   {
@@ -47,28 +50,43 @@ public class Peasant extends Sprite
       int height = bmp.getHeight();
       int x = (int)event.getX();
       int y = (int)event.getY();
+      Velocity currVel = getVelocity();
+      
       if( (x >= (loc.x - width) && x <= (loc.x + width*2)) &&
           (y >= (loc.y - height) && y <= (loc.y + height*2)))
       {
-        savedVel = getVelocity();
-        setVelocity(0, 0, getVelocity().getxDir(), getVelocity().getyDir());
+        savedVel = currVel;
+        setVelocity(0, 0, currVel.getxDir(), currVel.getyDir());
         line = new Path();
-        line.moveTo(event.getX(), event.getY());
+        line.moveTo((float)x, (float)y);
+        lastPoint = new Point(x, y);
       }
     }
     
     if(event.getAction() == MotionEvent.ACTION_MOVE && line != null)
     {
-      line.lineTo(event.getX(), event.getY());
+      int x = (int)event.getX();
+      int y = (int)event.getY();
+      Point curr = new Point(x, y);
+      
+      if(Geometry.getDistance(curr, lastPoint) > SEGMENT_SPACING)
+      {
+        line.incReserve(1);
+        line.lineTo((float)x, (float)y);
+      }
     }
     
     if(event.getAction() == MotionEvent.ACTION_UP && line != null)
     {
-      line.lineTo(event.getX(), event.getY());
-      line.setLastPoint(event.getX(), event.getY());
+      int x = (int)event.getX();
+      int y = (int)event.getY();
+      
+      line.lineTo((float)x, (float)y);
+      line.setLastPoint((float)x, (float)y);
       lines.add(line);
       line = null;
       setVelocity(savedVel);
+      lastPoint = null;
     }
   }
 }
