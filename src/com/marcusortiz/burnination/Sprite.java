@@ -53,6 +53,12 @@ public abstract class Sprite
     rect.set(location.x, location.y, location.x + bitmap.getWidth(), location.y + bitmap.getHeight());
   }
   
+  public void setLocation(Point point)
+  {
+    location.set(point.x, point.y);
+    rect.set(location.x, location.y, location.x + bitmap.getWidth(), location.y + bitmap.getHeight());
+  }
+  
   public Rect getRect()
   {
     return rect;

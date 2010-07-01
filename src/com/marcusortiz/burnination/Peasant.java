@@ -1,5 +1,6 @@
 package com.marcusortiz.burnination;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import android.graphics.Bitmap;
@@ -16,6 +17,8 @@ public class Peasant extends Sprite
   
   private View view;
   private Path line = null;
+  private LinkedList<Point> waypoints = null;
+  private boolean lineCompleted = false;
   private Velocity savedVel;
   private Point lastPoint = null;
   
@@ -35,6 +38,7 @@ public class Peasant extends Sprite
   {
     super.checkBorders(view);
     checkCollisions();
+    followLine();
   }
 
   public void checkCollisions()
@@ -59,13 +63,15 @@ public class Peasant extends Sprite
       {
         savedVel = currVel;
         setVelocity(0, 0, currVel.getxDir(), currVel.getyDir());
+        waypoints = new LinkedList<Point>();
         line = new Path();
         line.moveTo((float)x, (float)y);
         lastPoint = new Point(x, y);
+        waypoints.add(lastPoint);
       }
     }
     
-    if(event.getAction() == MotionEvent.ACTION_MOVE && line != null)
+    if(event.getAction() == MotionEvent.ACTION_MOVE && line != null && waypoints != null)
     {
       int x = (int)event.getX();
       int y = (int)event.getY();
@@ -75,20 +81,37 @@ public class Peasant extends Sprite
       {
         line.incReserve(1);
         line.lineTo((float)x, (float)y);
+        waypoints.add(curr);
       }
     }
     
-    if(event.getAction() == MotionEvent.ACTION_UP && line != null)
+    if(event.getAction() == MotionEvent.ACTION_UP && line != null && waypoints != null)
     {
       int x = (int)event.getX();
       int y = (int)event.getY();
       
       line.lineTo((float)x, (float)y);
       line.setLastPoint((float)x, (float)y);
+      waypoints.add(new Point(x, y));
       lines.add(line);
       line = null;
-      setVelocity(savedVel);
+      //setVelocity(savedVel);
+      lineCompleted = true;
       lastPoint = null;
+    }
+  }
+  
+  public void followLine()
+  {
+    if(waypoints != null && !waypoints.isEmpty() && lineCompleted)
+    {
+      setLocation(waypoints.removeFirst());
+    }
+    else if(waypoints != null && waypoints.isEmpty())
+    {
+      waypoints = null;
+      lineCompleted = false;
+      setVelocity(savedVel);
     }
   }
 }
