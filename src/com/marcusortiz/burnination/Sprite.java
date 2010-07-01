@@ -4,6 +4,7 @@ import java.util.Random;
 
 import android.graphics.Bitmap;
 import android.graphics.Point;
+import android.graphics.Rect;
 import android.view.View;
 
 public abstract class Sprite
@@ -11,18 +12,23 @@ public abstract class Sprite
   private Bitmap bitmap;
   private Point location;
   private Velocity velocity;
+  private Rect rect;
 
-  public Sprite(Bitmap bitmap)
+  public Sprite(Bitmap bitmap, Point location)
   {
     this.bitmap = bitmap;
-    this.location = new Point();
+    this.location = new Point(location);
     this.velocity = new Velocity();
+    this.rect = new Rect(this.location.x, this.location.y,
+      this.location.x + this.bitmap.getWidth(), this.location.y + this.bitmap.getHeight());
   }
   
-  public Sprite(Bitmap bitmap, Velocity speed)
+  public Sprite(Bitmap bitmap, Point location, Velocity speed)
   {
     this.bitmap = bitmap;
-    this.location = new Point();
+    this.location = new Point(location);
+    this.rect = new Rect(this.location.x, this.location.y,
+        this.location.x + this.bitmap.getWidth(), this.location.y + this.bitmap.getHeight());
     this.velocity = new Velocity(speed.getX(), speed.getY(), speed.getxDir(), speed.getyDir());
   }
 
@@ -44,6 +50,12 @@ public abstract class Sprite
   public void setLocation(int x, int y)
   {
     location.set(x, y);
+    rect.set(location.x, location.y, location.x + bitmap.getWidth(), location.y + bitmap.getHeight());
+  }
+  
+  public Rect getRect()
+  {
+    return rect;
   }
 
   public Velocity getVelocity()

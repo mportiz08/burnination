@@ -11,20 +11,22 @@ import android.view.View;
 public class Peasant extends Sprite
 {
   public static final int SEGMENT_SPACING = 50;
+  public static final int SPEED = 1;
+  public static final int INIT_COUNT = 3;
   
   private View view;
   private Path line = null;
   private Velocity savedVel;
   private Point lastPoint = null;
   
-  public Peasant(Bitmap bitmap)
+  public Peasant(Bitmap bitmap, Point location)
   {
-    super(bitmap);
+    super(bitmap, location);
   }
 
-  public Peasant(Bitmap bitmap, Velocity speed, View view)
+  public Peasant(Bitmap bitmap, Point location, Velocity speed, View view)
   {
-    super(bitmap, speed);
+    super(bitmap, location, speed);
     this.view = view;
   }
 

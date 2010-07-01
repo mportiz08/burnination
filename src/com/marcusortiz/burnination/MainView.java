@@ -11,6 +11,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.Point;
 import android.media.MediaPlayer;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -18,9 +19,6 @@ import android.view.SurfaceView;
 
 public class MainView extends SurfaceView implements SurfaceHolder.Callback
 {
-  public static final int SPEED_TROGDOR = 2;
-  public static final int SPEED_PEASANT = 1;
-  public static final int NUM_PEASANTS = 3;
   public static final int TRANSPARENCY = 50;
   public static final String DEBUG = "DEBUG";
   
@@ -123,19 +121,20 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback
   {
     sprites = new ArrayList<Sprite>();
     lines = new ArrayList<Path>();
+    Point middle = new Point((this.getWidth() / 2) - (bitmapCache.get(ID.TROGDOR_L).getWidth() / 2),
+                             (this.getHeight() / 2) - (bitmapCache.get(ID.TROGDOR_L).getHeight() / 2));
     
     // create trogdor
-    Velocity trogdorVel = new Velocity(SPEED_TROGDOR, SPEED_TROGDOR, Direction.RIGHT, Direction.DOWN);
-    trogdor = new Trogdor(bitmapCache.get(ID.TROGDOR_R), trogdorVel, this);
-    trogdor.setLocation((this.getWidth() / 2) - (trogdor.getGraphic().getWidth() / 2), (this.getHeight() / 2) - (trogdor.getGraphic().getHeight() / 2));
+    Velocity trogdorVel = new Velocity(Trogdor.SPEED, Trogdor.SPEED, Direction.RIGHT, Direction.DOWN);
+    trogdor = new Trogdor(bitmapCache.get(ID.TROGDOR_R), middle, trogdorVel, this);
     sprites.add(trogdor);
     
     // create peasants
     peasants = new ArrayList<Peasant>();
-    for(int i = 0; i < NUM_PEASANTS; i++)
+    for(int i = 0; i < Peasant.INIT_COUNT; i++)
     {
-      Velocity pVel = new Velocity(SPEED_PEASANT, SPEED_PEASANT, Direction.randomX(), Direction.randomY());
-      Peasant p = new Peasant(bitmapCache.get(ID.PEASANT), pVel, this);
+      Velocity pVel = new Velocity(Peasant.SPEED, Peasant.SPEED, Direction.randomX(), Direction.randomY());
+      Peasant p = new Peasant(bitmapCache.get(ID.PEASANT), new Point(), pVel, this);
       p.setLocation(p.getRandomPoint(this).x, p.getRandomPoint(this).y);
       peasants.add(p);
     }
