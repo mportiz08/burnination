@@ -5,6 +5,8 @@ import android.graphics.PointF;
 
 public class Geometry
 {
+  public static final double halfPi = Math.PI / 2;
+  
   public static double getDistance(Point a, Point b)
   { 
     return Math.sqrt( (b.y - a.y)*(b.y - a.y) + (b.x - a.x)*(b.x - a.x) );
@@ -21,12 +23,10 @@ public class Geometry
     int yDir = 0;
     int xlen = b.x - a.x;
     int ylen = b.y - a.y;
-    double halfPi = Math.PI / 2;
-    double twoPi = 2 * Math.PI;
-    double angle = Math.atan2(ylen, xlen);
+    double angle = Math.atan2((double)xlen, (double)ylen);
     
     // my old friend, the unit circle
-    if(angle == 0 || angle == twoPi)
+    if(angle == 0)
     {
       xDir = Direction.RIGHT;
       yDir = 0;
