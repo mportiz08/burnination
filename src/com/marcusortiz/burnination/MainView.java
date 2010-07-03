@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.CornerPathEffect;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
@@ -20,6 +21,7 @@ import android.view.SurfaceView;
 public class MainView extends SurfaceView implements SurfaceHolder.Callback
 {
   public static final int TRANSPARENCY = 50;
+  public static final int CORNER_RADIUS = 50;
   public static final String DEBUG = "DEBUG";
   
   private MediaPlayer song;
@@ -73,7 +75,7 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback
       linePaint.setStrokeWidth(2);
       linePaint.setColor(Color.WHITE);
       linePaint.setAlpha(TRANSPARENCY);
-      //linePaint.setShadowLayer(1, 1, 1, Color.BLACK);
+      linePaint.setPathEffect(new CornerPathEffect(CORNER_RADIUS));
       linePaint.setAntiAlias(true);
       
       canvas.drawPath(lines.get(lines.size() - 1), linePaint);
