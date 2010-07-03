@@ -11,7 +11,7 @@ import android.view.View;
 
 public class Peasant extends Sprite
 {
-  public static final int SEGMENT_SPACING = 50;
+  public static final int SEGMENT_SPACING = 10;
   public static final int SPEED = 1;
   public static final int INIT_COUNT = 3;
   
@@ -19,8 +19,8 @@ public class Peasant extends Sprite
   private Path line = null;
   private LinkedList<Point> waypoints = null;
   private boolean lineCompleted = false;
-  private int savedX, savedY;
-  private Direction savedDir;
+  private Direction newDir = null;
+  private Velocity savedVel = null;
   private Point lastPoint = null;
   
   public Peasant(Bitmap bitmap, Point location)
@@ -62,8 +62,7 @@ public class Peasant extends Sprite
       if( (x >= (loc.x - width) && x <= (loc.x + width*2)) &&
           (y >= (loc.y - height) && y <= (loc.y + height*2)))
       {
-        savedX = currVel.getX();
-        savedY = currVel.getY();
+        savedVel = currVel;
         setVelocity(0, 0, currVel.getxDir(), currVel.getyDir());
         waypoints = new LinkedList<Point>();
         line = new Path();
@@ -92,18 +91,18 @@ public class Peasant extends Sprite
       int x = (int)event.getX();
       int y = (int)event.getY();
       
+      line.lineTo((float)x, (float)y);
+      line.setLastPoint((float)x, (float)y);
+      
       int numPoints = waypoints.size();
       if(numPoints > 1)
       {
-        savedDir = Geometry.findDir(waypoints.get(numPoints - 2), waypoints.get(numPoints - 1));
+        newDir = Geometry.findDir(waypoints.get(numPoints - 2), waypoints.get(numPoints - 1));
       }
       
-      line.lineTo((float)x, (float)y);
-      line.setLastPoint((float)x, (float)y);
       waypoints.add(new Point(x, y));
       lines.add(line);
       line = null;
-      //setVelocity(savedVel);
       lineCompleted = true;
       lastPoint = null;
     }
@@ -115,12 +114,20 @@ public class Peasant extends Sprite
     {
       setLocation(waypoints.removeFirst());
     }
-    else if(waypoints != null && waypoints.isEmpty())
+    else if(waypoints != null && waypoints.isEmpty() && lineCompleted)
     {
       waypoints = null;
       lineCompleted = false;
       //setVelocity(savedVel);
-      setVelocity(new Velocity(savedX, savedY, savedDir));
+      if(newDir != null)
+      {
+        setVelocity(SPEED, SPEED, newDir.xDir, newDir.yDir);
+        newDir = null;
+      }
+      else
+      {
+        setVelocity(savedVel);
+      }
     }
   }
 }

@@ -19,58 +19,11 @@ public class Geometry
   
   public static Direction findDir(Point a, Point b)
   {
-    int xDir = 0;
-    int yDir = 0;
     int xlen = b.x - a.x;
     int ylen = b.y - a.y;
-    double angle = Math.atan2((double)xlen, (double)ylen);
     
-    // my old friend, the unit circle
-    if(angle == 0)
-    {
-      xDir = Direction.RIGHT;
-      yDir = 0;
-    }
-    else if(angle > 0 && angle < halfPi)
-    {
-      xDir = Direction.RIGHT;
-      yDir = Direction.UP;
-    }
-    else if(angle == halfPi)
-    {
-      xDir = 0;
-      yDir = Direction.UP;
-    }
-    else if(angle > halfPi && angle < Math.PI)
-    {
-      xDir = Direction.LEFT;
-      yDir = Direction.UP;
-    }
-    else if(angle == Math.PI)
-    {
-      xDir = Direction.LEFT;
-      yDir = 0;
-    }
-    else if(angle < 0 && angle > (-(halfPi)))
-    {
-      xDir = Direction.RIGHT;
-      yDir = Direction.DOWN;
-    }
-    else if(angle == -(halfPi))
-    {
-      xDir = 0;
-      yDir = Direction.DOWN;
-    }
-    else if(angle < (-(halfPi)) && angle > (-(Math.PI)))
-    {
-      xDir = Direction.LEFT;
-      yDir = Direction.DOWN;
-    }
-    else if(angle == -(Math.PI))
-    {
-      xDir = Direction.LEFT;
-      yDir = 0;
-    }
+    int xDir = (xlen > 0) ? Direction.RIGHT : Direction.LEFT;
+    int yDir = (ylen > 0) ? Direction.DOWN : Direction.UP;
     
     return new Direction(xDir, yDir);
   }

@@ -95,54 +95,54 @@ public abstract class Sprite
   
   public void checkBorders(View view)
   {
-    Point loc = getLocation();
-    Velocity speed = getVelocity();
     Bitmap graphic = getGraphic();
-    int width = graphic.getWidth();
-    int height = graphic.getHeight();
+    int gWidth = graphic.getWidth();
+    int gHeight = graphic.getHeight();
+    int vWidth = view.getWidth();
+    int vHeight = view.getHeight();
 
     // Direction
-    if(speed.getxDir() == Direction.RIGHT)
+    if(velocity.getxDir() == Direction.RIGHT)
     {
-      loc.x = loc.x + speed.getX();
+      location.x = location.x + velocity.getX();
     }
     else
     {
-      loc.x = loc.x - speed.getX();
+      location.x = location.x - velocity.getX();
     }
-    if(speed.getyDir() == Direction.DOWN)
+    if(velocity.getyDir() == Direction.DOWN)
     {
-      loc.y = loc.y + speed.getY();
+      location.y = location.y + velocity.getY();
     }
     else
     {
-      loc.y = loc.y - speed.getY();
+      location.y = location.y - velocity.getY();
     }
 
     // X Borders
-    if(loc.x < 0)
+    if(location.x < 0)
     {
-      speed.toggleXDir();
-      loc.x = 0 - loc.x;
+      velocity.toggleXDir();
+      location.x = 0 - location.x;
     }
     else
-      if(loc.x + width > view.getWidth())
+      if( (location.x + gWidth) > vWidth )
       {
-        speed.toggleXDir();
-        loc.x = loc.x + view.getWidth() - (loc.x + width);
+        velocity.toggleXDir();
+        location.x = location.x + vWidth - (location.x + gWidth);
       }
 
     // Y Borders
-    if(loc.y < 0)
+    if(location.y < 0)
     {
-      speed.toggleYDir();
-      loc.y = 0 - loc.y;
+      velocity.toggleYDir();
+      location.y = 0 - location.y;
     }
     else
-      if(loc.y + height > view.getHeight())
+      if( (location.y + gHeight) > vHeight )
       {
-        speed.toggleYDir();
-        loc.y = loc.y + view.getHeight() - (loc.y + height);
+        velocity.toggleYDir();
+        location.y = location.y + vHeight - (location.y + gHeight);
       }
   }
   
