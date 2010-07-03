@@ -22,6 +22,14 @@ public class Velocity
     this.xDir = xDir;
     this.yDir = yDir;
   }
+  
+  public Velocity(int dx, int dy, Direction dir)
+  {
+    this.dx = dx;
+    this.dy = dy;
+    this.xDir = dir.xDir;
+    this.yDir = dir.yDir;
+  }
 
   public int getxDir()
   {

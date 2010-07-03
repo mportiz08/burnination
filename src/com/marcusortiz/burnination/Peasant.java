@@ -19,7 +19,8 @@ public class Peasant extends Sprite
   private Path line = null;
   private LinkedList<Point> waypoints = null;
   private boolean lineCompleted = false;
-  private Velocity savedVel;
+  private int savedX, savedY;
+  private Direction savedDir;
   private Point lastPoint = null;
   
   public Peasant(Bitmap bitmap, Point location)
@@ -61,7 +62,8 @@ public class Peasant extends Sprite
       if( (x >= (loc.x - width) && x <= (loc.x + width*2)) &&
           (y >= (loc.y - height) && y <= (loc.y + height*2)))
       {
-        savedVel = currVel;
+        savedX = currVel.getX();
+        savedY = currVel.getY();
         setVelocity(0, 0, currVel.getxDir(), currVel.getyDir());
         waypoints = new LinkedList<Point>();
         line = new Path();
@@ -90,6 +92,12 @@ public class Peasant extends Sprite
       int x = (int)event.getX();
       int y = (int)event.getY();
       
+      int numPoints = waypoints.size();
+      if(numPoints > 1)
+      {
+        savedDir = Geometry.findDir(waypoints.get(numPoints - 2), waypoints.get(numPoints - 1));
+      }
+      
       line.lineTo((float)x, (float)y);
       line.setLastPoint((float)x, (float)y);
       waypoints.add(new Point(x, y));
@@ -111,7 +119,8 @@ public class Peasant extends Sprite
     {
       waypoints = null;
       lineCompleted = false;
-      setVelocity(savedVel);
+      //setVelocity(savedVel);
+      setVelocity(new Velocity(savedX, savedY, savedDir));
     }
   }
 }
