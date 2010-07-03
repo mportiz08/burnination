@@ -34,7 +34,7 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback
   
   public enum ID
   {
-    TROGDOR_R, TROGDOR_L, PEASANT, BACKGROUND;
+    TROGDOR_R, TROGDOR_L, PEASANT_L, PEASANT_R, PEASANT_F, PEASANT_B, BACKGROUND;
   }
   
   public MainView(Context context)
@@ -57,7 +57,10 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback
     bitmapCache = new HashMap<ID, Bitmap>();
     bitmapCache.put(ID.TROGDOR_R, BitmapFactory.decodeResource(getResources(), R.drawable.trogdor));
     bitmapCache.put(ID.TROGDOR_L, BitmapFactory.decodeResource(getResources(), R.drawable.trogdorleft));
-    bitmapCache.put(ID.PEASANT, BitmapFactory.decodeResource(getResources(), R.drawable.peasant));
+    bitmapCache.put(ID.PEASANT_R, BitmapFactory.decodeResource(getResources(), R.drawable.peasant_right));
+    bitmapCache.put(ID.PEASANT_L, BitmapFactory.decodeResource(getResources(), R.drawable.peasant_left));
+    bitmapCache.put(ID.PEASANT_F, BitmapFactory.decodeResource(getResources(), R.drawable.peasant_front));
+    bitmapCache.put(ID.PEASANT_B, BitmapFactory.decodeResource(getResources(), R.drawable.peasant_back));
     bitmapCache.put(ID.BACKGROUND, BitmapFactory.decodeResource(getResources(), R.drawable.background));
   }
 
@@ -84,7 +87,7 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback
     // draw peasants
     for(Peasant p : peasants)
     {
-      canvas.drawBitmap(bitmapCache.get(ID.PEASANT), p.getLocation().x, p.getLocation().y, null);
+      canvas.drawBitmap(bitmapCache.get(ID.PEASANT_F), p.getLocation().x, p.getLocation().y, null);
     }
     
     // draw trogdor
@@ -136,7 +139,7 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback
     for(int i = 0; i < Peasant.INIT_COUNT; i++)
     {
       Velocity pVel = new Velocity(Peasant.SPEED, Peasant.SPEED, Direction.randomX(), Direction.randomY());
-      Peasant p = new Peasant(bitmapCache.get(ID.PEASANT), new Point(), pVel, this);
+      Peasant p = new Peasant(bitmapCache.get(ID.PEASANT_F), new Point(), pVel, this);
       p.setLocation(p.getRandomPoint(this).x, p.getRandomPoint(this).y);
       peasants.add(p);
     }
