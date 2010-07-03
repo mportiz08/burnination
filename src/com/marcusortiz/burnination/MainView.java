@@ -87,7 +87,14 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback
     // draw peasants
     for(Peasant p : peasants)
     {
-      canvas.drawBitmap(bitmapCache.get(ID.PEASANT_F), p.getLocation().x, p.getLocation().y, null);
+      if(p.getVelocity().getyDir() > 0)
+      {
+        canvas.drawBitmap(bitmapCache.get(ID.PEASANT_F), p.getLocation().x, p.getLocation().y, null);
+      }
+      else
+      {
+        canvas.drawBitmap(bitmapCache.get(ID.PEASANT_B), p.getLocation().x, p.getLocation().y, null);
+      }
     }
     
     // draw trogdor
