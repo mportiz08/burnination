@@ -22,7 +22,6 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback
 {
   public static final int TRANSPARENCY = 50;
   public static final int CORNER_RADIUS = 50;
-  public static final String DEBUG = "DEBUG";
   
   private MediaPlayer song;
   private GameThread thread;
