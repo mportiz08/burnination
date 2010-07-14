@@ -28,12 +28,13 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback
   private Map<ID, Bitmap> bitmapCache;
   private ArrayList<Sprite> sprites;
   private ArrayList<Peasant> peasants;
+  private Cottage testCottage;
   private Trogdor trogdor;
   private ArrayList<Path> lines;
   
   public enum ID
   {
-    TROGDOR_R, TROGDOR_L, PEASANT_L, PEASANT_R, PEASANT_F, PEASANT_B, BACKGROUND;
+    TROGDOR_R, TROGDOR_L, PEASANT_L, PEASANT_R, PEASANT_F, PEASANT_B, COTTAGE, BACKGROUND;
   }
   
   public MainView(Context context)
@@ -60,6 +61,7 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback
     bitmapCache.put(ID.PEASANT_L, BitmapFactory.decodeResource(getResources(), R.drawable.peasant_left));
     bitmapCache.put(ID.PEASANT_F, BitmapFactory.decodeResource(getResources(), R.drawable.peasant_front));
     bitmapCache.put(ID.PEASANT_B, BitmapFactory.decodeResource(getResources(), R.drawable.peasant_back));
+    bitmapCache.put(ID.COTTAGE, BitmapFactory.decodeResource(getResources(), R.drawable.cottage));
     bitmapCache.put(ID.BACKGROUND, BitmapFactory.decodeResource(getResources(), R.drawable.background));
   }
 
@@ -68,6 +70,9 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback
   {
     // draw background
     canvas.drawBitmap(bitmapCache.get(ID.BACKGROUND), 0, 0, null);
+    
+    // draw cottages
+    canvas.drawBitmap(bitmapCache.get(ID.COTTAGE), testCottage.getLocation().x, testCottage.getLocation().y, null);
     
     // draw lines
     if(lines != null && !lines.isEmpty())
@@ -134,6 +139,10 @@ public class MainView extends SurfaceView implements SurfaceHolder.Callback
     lines = new ArrayList<Path>();
     Point middle = new Point((this.getWidth() / 2) - (bitmapCache.get(ID.TROGDOR_L).getWidth() / 2),
                              (this.getHeight() / 2) - (bitmapCache.get(ID.TROGDOR_L).getHeight() / 2));
+    
+    // create cottages
+    testCottage = new Cottage(bitmapCache.get(ID.COTTAGE), new Point());
+    testCottage.setLocation(testCottage.getRandomPoint(this).x, testCottage.getRandomPoint(this).y);
     
     // create trogdor
     Velocity trogdorVel = new Velocity(Trogdor.SPEED, Trogdor.SPEED, Direction.RIGHT, Direction.DOWN);
